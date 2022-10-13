@@ -5,6 +5,7 @@ import authRouter from './routes/auth.js';
 import authTokenRouter from './routes/token.js';
 import authSessionRouter from './routes/session.js';
 import cookieParser from 'cookie-parser';
+import mongoose from 'mongoose';
 
 dotenv.config();
 
@@ -19,4 +20,12 @@ app.use('/auth', authRouter);
 app.use('/auth-session', authSessionRouter);
 app.use('/auth-token', authTokenRouter);
 
-app.listen(PORT, () => console.log(`Servidro corriendo en el puerto ${PORT}`));
+const bootstrap = async () => {
+  await mongoose.connect(process.env.MONGODB_URL);
+
+  app.listen(PORT, () =>
+    console.log(`Servidro corriendo en el puerto ${PORT}`),
+  );
+};
+
+bootstrap();
